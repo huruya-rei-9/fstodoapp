@@ -1,0 +1,251 @@
+
+url直接入力
+http://localhost/todoapplication/todoapp_add.php
+
+
+
+<!-- test中 -->
+
+<form method="post">
+    <table border="1">
+        <tr>
+            <td>ID</td>
+            <td>タイトル</td>
+            <td>内容</td>
+            <td>作成日時</td>
+            <td>編集</td>
+            <td>削除</td>
+        </tr>
+        <?php for($i = 1; $i < 4; $i++)
+        {
+            ?>
+            <tr>
+                <td><?php print $todo_ID[$i]; ?></td>
+                <td><?php print $todo_title[$i]; ?></td>
+                <td><?php print $todo_contents[$i]; ?></td>
+                <td><?php print $todo_created_at[$i]; ?></td>
+            </tr>
+        <?php
+        }
+        ?>
+        
+    </table>
+</form>
+
+<!-- test中(終) -->
+
+
+<!-- // ここまでcatchからスタート
+try
+{
+    $hoshi['M1'] = 'kani1';
+    $hoshi['M2'] = 'kani2';
+    $hoshi['M3'] = 'kani3';
+    $hoshi['M4'] = 'kani4';
+    $hoshi['M5'] = 'kani5';
+    $hoshi['M6'] = 'kani6';
+    $hoshi['M7'] = 'kani7';
+    $hoshi['M8'] = 'kani8';
+    $hoshi['M9'] = 'kani9';
+
+    // print count($hoshi);
+
+    $list_code = $_GET['listcode'];
+    $kazu[] = $list_code;
+    print $list_code;
+
+
+    $dsn = 'mysql:dbname=todoapp;host=localhost;charset=utf8';
+    $user = 'root';
+    $password = '';
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    //     for($i = 0; $i < count($hoshi); $i++)
+    // {
+    //     $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
+    //     $stmt = $dbh->prepare($sql);
+    //     $stmt->execute();
+
+    //     $rec = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    //     $todo_ID[]=$rec['ID'];
+    //     $todo_title[]=$rec['title'];
+    //     $todo_contents[]=$rec['content'];
+    //     $todo_created_at[]=$rec['created_at'];
+
+    // }
+
+    // print $todo_title[3];
+        foreach($hoshi as $key => $val)
+    {
+        $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
+        $stmt = $dbh->prepare($sql);
+        $data[0] = $val;
+        $stmt->execute($data);
+
+        $rec = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+        $todo_ID[]=$rec['ID'];
+        $todo_title[]=$rec['title'];
+        $todo_contents[]=$rec['content'];
+        $todo_created_at[]=$rec['created_at'];
+
+    }
+
+    print count($todo_ID);
+
+    var_dump($rec);
+    print '<br/>';
+
+    $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    $dbh = null;
+
+    print 'todoリスト一覧<br/><br/>';
+
+    print '<form method="post" action="todoapp_branch.php">';
+    while(true)
+    {
+        $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($rec == false)
+        {
+            break;
+        }
+        print '<input type="radio" name="listcode" value="'.$rec['ID'].'">';
+        print $rec['title'];
+        print $rec['content'];
+        print $rec['created_at'];
+        print '<br/>';
+    }
+    print '<input type="submit" name="add" value="追加">';
+    print '<input type="submit" name="edit" value="修正">';
+    print '<input type="submit" name="delete" value="削除">';
+    print '</form>';
+
+} -->
+
+
+
+<form method="post" action="kazu_change.php">
+<table border="1">
+<tr>
+<td>タイトル</td>
+<td>内容</td>
+<td>作成日時</td>
+</tr>
+<?php for($i = 0; $i < 3; $i++)
+{
+    ?>
+    <tr>
+    <td><?php print $todo_title; ?></td>
+    <td><?php print $todo_content; ?></td>
+    <td><?php print $todo_created_at; ?></td>
+    </tr>
+<?php
+}
+?>
+</table>
+
+
+
+//純正
+try
+{
+
+    $dsn = 'mysql:dbname=todoapp;host=localhost;charset=utf8';
+    $user = 'root';
+    $password = '';
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    $dbh = null;
+
+    print 'todoリスト一覧<br/><br/>';
+
+    print '<form method="post" action="todoapp_branch.php">';
+    while(true)
+    {
+        $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($rec == false)
+        {
+            break;
+        }
+        print '<input type="radio" name="listcode" value="'.$rec['ID'].'">';
+        print $rec['title'];
+        print '<br/>';
+    }
+    print '<input type="submit" name="add" value="追加">';
+    print '<input type="submit" name="edit" value="修正">';
+    print '<input type="submit" name="delete" value="削除">';
+    print '</form>';
+
+}
+
+catch (Exception $e)
+{
+    print'ただいま障害により大変ご迷惑をお掛けしております。';
+    exit();
+}
+
+
+
+
+try
+{
+
+    $dsn = 'mysql:dbname=todoapp;host=localhost;charset=utf8';
+    $user = 'root';
+    $password = '';
+    $dbh = new PDO($dsn, $user, $password);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
+    $stmt = $dbh->prepare($sql);
+    $stmt->execute();
+
+    $dbh = null;
+
+    print 'todoリスト一覧<br/><br/>';
+
+    print '<form method="post" action="todoapp_branch.php">';
+    while(true)
+    {
+        $rec = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($rec == false)
+        {
+            break;
+        }
+        print '<table border="1">';
+        print '<tr>';
+        print '<td>';
+        print '<input type="radio" name="listcode" value="'.$rec['ID'].'">';
+        print '</td>';
+        print '<td>';
+        print $rec['title'];
+        print '</td>';
+        print '<td>';
+        print $rec['content'];
+        print '</td>';
+        print '<td>';
+        print $rec['created_at'];
+        print '</td>';
+        print '</tr>';
+        print '</table>';
+        // $todo_title = $rec['title'];
+        // $todo_content = $rec['content'];
+        // $todo_created_at = $rec['created_at'];
+        // print '<br/>';
+    }
+    print '<input type="submit" name="add" value="追加">';
+    print '<input type="submit" name="edit" value="修正">';
+    print '<input type="submit" name="delete" value="削除">';
+    print '</form>';
+
+}
