@@ -18,6 +18,7 @@ try
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
+    //データ数を取得
     $sql1 = 'SELECT COUNT(*) FROM posts';
     $stmt1 = $dbh->prepare($sql1);
     $stmt1->execute();
@@ -28,6 +29,7 @@ try
     $todo_num = $rec1['COUNT(*)'];
     $max_page = ceil($todo_num / MAX);
 
+    //すべてのデータをカラムごとにそれぞれの変数に格納
     $sql2 = 'SELECT * FROM posts';
     $stmt2 = $dbh->query($sql2);
     foreach ($stmt2 as $row)
@@ -38,6 +40,7 @@ try
         $todo_created_at[] = $row['created_at'];
     }
     
+    //ページング機能
     if(!isset($_GET['page_id'])){
         $now = 1;
     }else{
@@ -46,7 +49,9 @@ try
     
     $start_no = ($now - 1) * MAX;
 
+    $dbh = null;
     
+
     print 'todoリスト一覧<br/><br/>';
     
     print '<form method="post" action="todoapp_branch.php">';
@@ -57,9 +62,6 @@ try
     print '<input type="submit" name="like" value="検索">';
     print '</form>';
     print '</br>';
-
-
-    $dbh = null;
 
 
     print '<form method="post" action="todoapp_branch.php">';
@@ -78,6 +80,8 @@ try
     print '作成日時';
     print '</td>';
     print '</tr>';
+
+    //データを5こずつ表示
     for($i = $start_no; $i < $start_no + 5; $i++)
     {
         if(empty($todo_ID[$i]))
@@ -101,6 +105,7 @@ try
 
     }
     print '</table>';
+
     print '<input type="submit" name="add" value="追加">';
     print '<input type="submit" name="edit" value="修正">';
     print '<input type="submit" name="delete" value="削除">';

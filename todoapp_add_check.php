@@ -17,6 +17,9 @@ $todo_contents = htmlspecialchars($todo_contents, ENT_QUOTES, 'UTF-8');
 if($todo_title == '')
 {
     print 'タイトルが入力されていません。<br/>';
+} elseif(strlen($todo_title) > 255)
+{
+    print 'タイトルは255字以内にしてください。';
 }
 else
 {

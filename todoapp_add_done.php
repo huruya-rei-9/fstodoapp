@@ -28,6 +28,7 @@ try
     $date->setTimeZone(new DateTimeZone('Asia/Tokyo'));
     $date = $date->format('Y-m-d H:i:s');
 
+    // NewTodoPageで書かれた内容をデータベースに追加
     $sql = 'INSERT INTO posts(title, content, created_at, updated_at) VALUES(?, ?, ?, ?)';
     $stmt = $dbh->prepare($sql);
     $data[] = $todo_title;

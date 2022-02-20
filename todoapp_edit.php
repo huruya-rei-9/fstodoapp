@@ -19,6 +19,7 @@ try
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    //ラジオボタンで選ばれたデータを取得
     $sql = 'SELECT title FROM posts WHERE ID=?';
     $stmt = $dbh->prepare($sql);
     $data[] = $list_code;

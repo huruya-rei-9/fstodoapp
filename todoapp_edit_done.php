@@ -29,6 +29,7 @@ try
     $date->setTimeZone(new DateTimeZone('Asia/Tokyo'));
     $date = $date->format('Y-m-d H:i:s');
 
+    // 編集画面で打ち込まれたデータを新たに上書き
     $sql = 'UPDATE posts SET title=?, content=?, updated_at=? WHERE ID=?';
     $stmt = $dbh->prepare($sql);
     $data[] = $todo_title;
