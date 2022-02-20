@@ -10,18 +10,44 @@
 
 try
 {
-
+    
+    
     $dsn = 'mysql:dbname=todoapp;host=localhost;charset=utf8';
     $user = 'root';
     $password = '';
     $dbh = new PDO($dsn, $user, $password);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    $sql1 = 'SELECT COUNT(*) FROM posts';
+    $stmt1 = $dbh->prepare($sql1);
+    $stmt1->execute();
+    $rec1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+    
+    define('MAX','5');
+    
+    $todo_num = $rec1['COUNT(*)'];
+    $max_page = ceil($todo_num / MAX);
 
-    $sql = 'SELECT ID, title, content, created_at FROM posts WHERE 1';
-    $stmt = $dbh->prepare($sql);
-    $stmt->execute();
-
+    $sql2 = 'SELECT * FROM posts';
+    $stmt2 = $dbh->query($sql2);
+    foreach ($stmt2 as $row)
+    {
+        $todo_ID[] = $row['ID'];
+        $todo_title[] = $row['title'];
+        $todo_content[] = $row['content'];
+        $todo_created_at[] = $row['created_at'];
+    }
+    
+    if(!isset($_GET['page_id'])){
+        $now = 1;
+    }else{
+        $now = $_GET['page_id'];
+    }
+    
+    $start_no = ($now - 1) * MAX;
+    
     $dbh = null;
+
 
     print 'todoリスト一覧<br/><br/>';
 
@@ -41,31 +67,27 @@ try
     print '作成日時';
     print '</td>';
     print '</tr>';
-    while(true)
+    for($i = $start_no; $i < $start_no + 5; $i++)
     {
-        $rec = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($rec == false)
+        if(empty($todo_ID[$i]))
         {
             break;
         }
         print '<tr>';
         print '<td>';
-        print '<input type="radio" name="listcode" value="'.$rec['ID'].'">';
+        print '<input type="radio" name="listcode" value="'.$todo_ID[$i].'">';
         print '</td>';
         print '<td>';
-        print $rec['title'];
+        print $todo_title[$i];
         print '</td>';
         print '<td>';
-        print $rec['content'];
+        print $todo_content[$i];
         print '</td>';
         print '<td>';
-        print $rec['created_at'];
+        print $todo_created_at{$i};
         print '</td>';
         print '</tr>';
-        // $todo_title = $rec['title'];
-        // $todo_content = $rec['content'];
-        // $todo_created_at = $rec['created_at'];
-        // print '<br/>';
+
     }
     print '</table>';
     print '<input type="submit" name="add" value="追加">';
@@ -73,7 +95,34 @@ try
     print '<input type="submit" name="delete" value="削除">';
     print '</form>';
 
+    
+    if($now > 1){ // リンクをつけるかの判定
+        echo '<a href="./todoapp_list.php?page_id='.($now - 1).'">前へ</a>'. '　';
+    } elseif ($now == 1) {
+        echo '';
+    } else {
+        echo '前へ'. '　';
+    }
+ 
+    for($i = 1; $i <= $max_page; $i++){
+        if ($i == $now) {
+            echo $now. '　'; 
+        } else {
+            echo '<a href="./todoapp_list.php?page_id='.$i.'">'.$i.'</a>'. '　';
+        }
+    }
+ 
+    if($now < $max_page){ // リンクをつけるかの判定
+        echo '<a href="./todoapp_list.php?page_id='.($now + 1).'">次へ</a>'. '　';
+    } elseif ($now == $max_page) {
+        echo '';
+    } else {
+        echo '次へ';
+    }
+
 }
+
+
 
 catch (Exception $e)
 {
