@@ -45,11 +45,22 @@ try
     }
     
     $start_no = ($now - 1) * MAX;
+
     
+    print 'todoリスト一覧<br/><br/>';
+    
+    print '<form method="post" action="todoapp_branch.php">';
+    print '<p>';
+    print '検索したいタイトルを入力してください';
+    print '</p>';
+    print '<input placeholder="キーワードを入力" name="liketitle">';
+    print '<input type="submit" name="like" value="検索">';
+    print '</form>';
+    print '</br>';
+
+
     $dbh = null;
 
-
-    print 'todoリスト一覧<br/><br/>';
 
     print '<form method="post" action="todoapp_branch.php">';
     print '<table border="1">';

@@ -328,3 +328,12 @@ catch (Exception $e)
 }
 
 ?>
+
+
+    // $sql3 = 'SELECT * FROM posts WHERE title LIKE ?';
+    // $stmt3 = $dbh->prepare($sql3);
+    // $data[] = "%$like_title%";
+    // $stmt3->execute($data);
+    // $rec3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+    // // var_dump($rec3['title']);
+    // print $rec3['title'];

@@ -30,4 +30,18 @@ if(isset($_POST['delete']) == true)
     exit();
 }
 
+if(isset($_POST['like']) == true)
+{
+
+    $like_title = $_POST['liketitle'];
+    
+    if($like_title == '')
+    {
+        header('Location: todoapp_ng2.php');
+        exit();
+    }
+    header('Location: todoapp_likesearch.php?liketitle='.$like_title);
+    exit();
+}
+
 ?>
